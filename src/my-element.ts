@@ -1,5 +1,5 @@
 import { LitElement, css, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
 
@@ -27,6 +27,12 @@ export class MyElement extends LitElement {
   @property({attribute: false}) 
   openDropdown: string |null = null;
 
+  @state()
+  private isOpen = false;
+
+  toggleDropdown(){
+    this.isOpen = !this.isOpen;
+  }
 
   
   render() {
@@ -49,8 +55,29 @@ export class MyElement extends LitElement {
               <button class="iconbutton"> 
                   <img src="images/select.png" alt="Select icon" />
                 </button>
-                <button class="iconbutton">
+                <button class="iconbutton" @click="${() => 
+                this.toggleDropdown()}">
                   <img src="images/pen.png" alt="Pen icon" />
+                  <div class="dropdown-content" style="display: ${this.isOpen ? 'block' : 'none'}">
+                  <div class = "dropdown-row">
+                    <a href="#"><img src="images/stylus1.png" alt="Pen 1"></a>
+                    <a href="#"><img src="images/stylus2.png" alt="Pen 2"></a>
+                    <a href="#"><img src="images/stylus3.png" alt="Pen 3"></a>
+                    <a href="#"><img src="images/stylus4.png" alt="Pen 4"></a>
+                    <a href="#"><img src="images/blueCircle.png" alt="blue"></a>
+                    <a href="#"><img src="images/greenCircle.png" alt="green"></a>
+                    <a href="#"><img src="images/redCircle.png" alt="red"></a>
+                    <a href="#"><img src="images/yellowCircle.png" alt="yellow"></a>
+                  </div>
+                  <div class="dropdown-secondRow">
+                  <a href="#"><img src="images/penSize1.png" alt="XS"></a>
+                  <a href="#"><img src="images/penSize2.png" alt="S"></a>
+                  <a href="#"><img src="images/penSize3.png" alt="M"></a>
+                  <a href="#"><img src="images/penSize4.png" alt="L"></a>
+                  <a href="#"><img src="images/penSize5.png" alt="XL"></a>
+                </div>
+                </div>
+                  
                 </button>
                 <button class="iconbutton">
                   <img src="images/eraser.png" alt="Eraser icon" />
@@ -62,16 +89,11 @@ export class MyElement extends LitElement {
                   <img src="images/sticker.png" alt="Sticker icon" />
                 </button>
                 <button class="iconbutton" @click="${() => 
-                this.toggleDropdown('dropdown1')}">
+                this.toggleDropdown()}">
                   <img src="images/image.png" alt="image icon" />
-                  <ul id="dropdown1" class="dropdown" style="display: ${this.openDropdown
-                  === 'dropdown1' ? 'block' : 'none'}">
-                    <li><a href="#">Upload from Photos</a></li>
-                    <li><a href="#">Upload from Files</a></li>
-                  </ul>
                 </button>
               </ul>
-            </div>
+            </div>  
           </nav>
         </header>
       </div>
@@ -95,17 +117,43 @@ export class MyElement extends LitElement {
     `
   }
 
-  toggleDropdown(id: string) {
-  this.openDropdown = this.openDropdown === id ? null : id;
-  }
-  
-
-
   private _onClick() {
     this.count++
   }
 
   static styles = css`
+
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .dropdown-secondRow{
+      display: flex;
+      flex-direction: row;
+    }
+
+    .secondDropdown{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: inline-flex
+    }
+
+    .dropdown-content a:hover {background-color: #ddd;}
     :host {
       max-width: 1280px;
       margin: 0 auto;
